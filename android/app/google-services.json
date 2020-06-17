@@ -44,6 +44,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "501245658559-sdr7om74h8n7e4b8oa6d7bre21nlfu17.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "insertgroupname.cs.planthai",
+            "certificate_hash": "e09cfd4ddfc8f99d1727bc5c019f4741bf1e54c3"
+          }
+        },
+        {
           "client_id": "501245658559-c1sunnm5abtqilld43kbuchlrlf303dl.apps.googleusercontent.com",
           "client_type": 3
         }
