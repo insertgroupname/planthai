@@ -3,36 +3,62 @@ import 'package:meta/meta.dart';
 
 @immutable
 abstract class RegisterEvent extends Equatable {
-  RegisterEvent([List props = const []]) : super(props);
-}
-
-class EmailChanged extends RegisterEvent {
-  final String email;
-
-  EmailChanged({@required this.email}) : super([email]);
+  const RegisterEvent();
 
   @override
-  String toString() => 'EmailChanged { email :$email }';
+  List<Object> get props => [];
 }
 
-class PasswordChanged extends RegisterEvent {
-  final String password;
+class RegisterEmailChanged extends RegisterEvent {
+  final String email;
 
-  PasswordChanged({@required this.password}) : super([password]);
+  const RegisterEmailChanged({@required this.email});
 
   @override
-  String toString() => 'PasswordChanged { password: $password }';
+  List<Object> get props => [email];
+
+  @override
+  String toString() => 'RegisterEmailChanged { email :$email }';
 }
 
-class Submitted extends RegisterEvent {
+class RegisterPasswordChanged extends RegisterEvent {
+  final String password;
+
+  RegisterPasswordChanged({@required this.password});
+
+  @override
+  List<Object> get props => [password];
+
+  @override
+  String toString() => 'RegisterPasswordChanged { password: $password }';
+}
+
+class RegisterConfirmPasswordChanged extends RegisterEvent {
+  final String confirmPassword;
+  final String password;
+
+  RegisterConfirmPasswordChanged(
+      {@required this.confirmPassword, @required this.password});
+
+  @override
+  List<Object> get props => [confirmPassword, password];
+
+  @override
+  String toString() =>
+      'RegisterConfirmPasswordChanged { RegisterConfirmPassword: $confirmPassword }';
+}
+
+class RegisterSubmitted extends RegisterEvent {
   final String email;
   final String password;
 
-  Submitted({@required this.email, @required this.password})
-      : super([email, password]);
+  RegisterSubmitted({@required this.email, @required this.password});
+
+  @override
+  List<Object> get props => [email, password];
 
   @override
   String toString() {
-    return 'Submitted { email: $email, password: $password }';
+    return 'RegisterSubmitted { email: $email, password: $password }';
   }
 }

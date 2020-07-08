@@ -12,17 +12,30 @@ class CreateAccountButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      child: Text(
-        'Create an Account',
-      ),
-      onPressed: () {
-        Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) {
-            return RegisterScreen(userRepository: _userRepository);
-          }),
-        );
-      },
+    return Column(
+      children: <Widget>[
+        Padding(
+          padding: const EdgeInsets.only(top: 50.0),
+          child: Text(
+            'Don\'t have an Account ?',
+            style: TextStyle(color: Color.fromRGBO(221, 221, 221, 1)),
+          ),
+        ),
+        FlatButton(materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+          padding: EdgeInsets.all(0) ,
+          child: Text(
+            'Create an Account',
+            style: TextStyle(color: Colors.white),
+          ),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) {
+                return RegisterScreen(userRepository: _userRepository);
+              }),
+            );
+          },
+        ),
+      ],
     );
   }
 }

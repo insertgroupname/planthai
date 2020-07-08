@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hexcolor/hexcolor.dart';
 import 'package:planthai/user_repository.dart';
-import 'package:planthai/authentication_bloc/bloc.dart';
+import 'package:planthai/Authentication/authentication_bloc.dart';
 import 'package:planthai/login/login.dart';
-
+import 'package:google_fonts/google_fonts.dart';
 class LoginForm extends StatefulWidget {
   final UserRepository _userRepository;
 
@@ -34,8 +35,8 @@ class _LoginFormState extends State<LoginForm> {
   void initState() {
     super.initState();
     _loginBloc = BlocProvider.of<LoginBloc>(context);
-    _emailController.addListener(_onEmailChanged);
-    _passwordController.addListener(_onPasswordChanged);
+    _emailController.addListener(_onLoginEmailChanged);
+    _passwordController.addListener(_onLoginPasswordChanged);
   }
 
   @override
@@ -72,48 +73,85 @@ class _LoginFormState extends State<LoginForm> {
             );
         }
         if (state.isSuccess) {
-          BlocProvider.of<AuthenticationBloc>(context).dispatch(LoggedIn());
+          BlocProvider.of<AuthenticationBloc>(context).add(AuthenticationLoggedIn());
         }
       },
-      child: BlocBuilder(
-        bloc: _loginBloc,
-        builder: (BuildContext context, LoginState state) {
+      child: BlocBuilder<LoginBloc,LoginState>(
+       builder: (BuildContext context, LoginState state) {
           return Padding(
             padding: EdgeInsets.all(20.0),
             child: Form(
               child: ListView(
                 children: <Widget>[
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
-                    child: Image.asset('assets/tourism.jpg', height: 200),
-                  ),
-                  TextFormField(
-                    controller: _emailController,
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.email),
-                      labelText: 'Email',
-                    ),
-                    autovalidate: true,
-                    autocorrect: false,
-                    validator: (_) {
-                      return !state.isEmailValid ? 'Invalid Email' : null;
-                    },
-                  ),
-                  TextFormField(
-                    controller: _passwordController,
-                    decoration: InputDecoration(
-                      icon: Icon(Icons.lock),
-                      labelText: 'Password',
-                    ),
-                    obscureText: true,
-                    autovalidate: true,
-                    autocorrect: false,
-                    validator: (_) {
-                      return !state.isPasswordValid ? 'Invalid Password' : null;
-                    },
+                    padding: EdgeInsets.only(left: 30, top: 90),
+                    child: Text('Sign In',
+                        style: GoogleFonts.lato(
+                            textStyle: TextStyle(
+                              color: Hexcolor('#ffffff'),
+                            ),
+                            fontWeight: FontWeight.w700,
+                            fontSize: 40)),
                   ),
                   Padding(
-                    padding: EdgeInsets.symmetric(vertical: 20),
+                    padding:
+                        const EdgeInsets.only(top: 60, left: 30, right: 30),
+                    child: TextFormField(
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.account_circle,
+                          color: Colors.white,
+                          size: 50,
+                        ),
+                        labelText: 'Email',
+                        labelStyle: GoogleFonts.lato(
+                            textStyle: TextStyle(color: Hexcolor('#DCDCDC')),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20),
+                      ),
+                      autovalidate: true,
+                      autocorrect: false,
+                      validator: (_) {
+                        return !state.isEmailValid ? 'Invalid Email' : null;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 30, right: 30),
+                    child: TextFormField(
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        icon: Icon(
+                          Icons.lock,
+                          color: Colors.white,
+                          size: 50,
+                        ),
+                        labelText: 'Password',
+                        labelStyle: GoogleFonts.lato(
+                            textStyle: TextStyle(color: Hexcolor('#DCDCDC')),
+                            fontWeight: FontWeight.w400,
+                            fontSize: 20),
+                      ),
+                      obscureText: true,
+                      autovalidate: true,
+                      autocorrect: false,
+                      validator: (_) {
+                        return !state.isPasswordValid
+                            ? 'Invalid Password'
+                            : null;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding:
+                        EdgeInsets.symmetric(vertical: 60.0, horizontal: 60),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: <Widget>[
@@ -143,20 +181,20 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
   }
 
-  void _onEmailChanged() {
-    _loginBloc.dispatch(
-      EmailChanged(email: _emailController.text),
+  void _onLoginEmailChanged() {
+    _loginBloc.add(
+      LoginEmailChanged(email: _emailController.text),
     );
   }
 
-  void _onPasswordChanged() {
-    _loginBloc.dispatch(
-      PasswordChanged(password: _passwordController.text),
+  void _onLoginPasswordChanged() {
+    _loginBloc.add(
+      LoginPasswordChanged(password: _passwordController.text),
     );
   }
 
   void _onFormSubmitted() {
-    _loginBloc.dispatch(
+    _loginBloc.add(
       LoginWithCredentialsPressed(
         email: _emailController.text,
         password: _passwordController.text,
@@ -164,3 +202,4 @@ class _LoginFormState extends State<LoginForm> {
     );
   }
 }
+
